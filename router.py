@@ -22,6 +22,12 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
 def build_router_query_engine(data_dir: str = DATA_DIR) -> RouterQueryEngine:
     """Load documents and build a router over Q&A and summarization query engines."""
+    if not os.path.isdir(data_dir) or not os.listdir(data_dir):
+        raise FileNotFoundError(
+            f"No documents found in '{data_dir}'. "
+            "Please add at least one document file to the data directory."
+        )
+
     documents = SimpleDirectoryReader(data_dir).load_data()
 
     # Index for precise Q&A (vector similarity search)
